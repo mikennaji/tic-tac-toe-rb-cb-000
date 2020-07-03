@@ -52,49 +52,42 @@ def display_board(board)
     array[index] = value
   end
 
-  def move(array,index,value="X")
-      update_array_at_with(array,index,value)
-      display_board(array)
+  def move(board, index, character)
+    board[index] = character
   end
 
   def turn(board)
-   puts("Please enter 1-9:")
-   raw_input= gets.chomp
-   index1 = input_to_index(raw_input)
-    if  valid_move?(board,index1) == true
-      move(board,index1)
-      display_board(board)
-    else
-     puts("Please enter 1-9:")
-     raw_input= gets.chomp
-     index1 = input_to_index(raw_input)
-    end
+  puts "Please choose a number 1-9:"
+  user_input = gets.chomp
+  index = input_to_index(user_input)
+  if valid_move?(board, index)
+    player_token = current_player(board)
+    move(board, index, player_token)
+    display_board(board)
+  else
+    turn(board)
+  end
+end
 
- end
 
  def play(board)
 
-
-     board.length.times do
-       break if won?(board)== true  || over?(board)==true
+   until over?(board)
        turn(board)
-
-
-
    end
 
 
-  if winner(board)=="X"
-    puts "Congratulations X!"
-  else
-   puts "Congratulations O!"
-  end
-  if draw?(board)
+
+
+  if won?(board)
+    puts "Congratulations #{winner(board)}!"
+  elsif draw?(board)
    puts "Cat's Game!"
   end
 
 
  end
+
 
  WIN_COMBINATIONS = [ [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[6,4,2]]
 
@@ -158,6 +151,7 @@ def over?(board)
   draw?(board)
   won?(board)
 end
+
 
 def winner(board)
 
